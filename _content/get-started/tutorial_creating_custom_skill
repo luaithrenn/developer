@@ -1,0 +1,89 @@
+
+---
+Tutorial: creating a custom skill
+---
+The Watson Assistant provides a boilerplate in Node.js for creating a simple hello world skill. Using this skill, when you say hello to your assistant, your assistant responds with hello world.  The high-level steps in this tutorial are as follows:
+1. Clone the git repository of the the hello world skill to your local system.  Start the skill on your local system.
+2. Test that the skill is working.  Simulate a conversation with the hello world skill.  Use the Converse REST API that is running on your local system.
+3. Register your locally-hosted skill with your Watson Assistant instance in IBM Cloud.
+4. Add your hello world skill to the skill set of your Watson Assistant instance.
+5. Test that the skill is working. Simulate a conversation with the hello world skill using the converse REST API of your Watson Application on IBM Cloud.
+6. Deploy your hello world skill to IBM Cloud and start it.
+7. Update the Watson Assistant application to reference the hello world skill on IBM Cloud.
+8. Test that the skill is working.  Simulate a conversation with your hello world skill on IBM Cloud using the converse REST API that your Watson application is running.
+
+### Before you begin#
+1. Set up access to your  Watson Assistant application instance on IBM Cloud.  For instructions, see [link] ( https://watson-personal-assistant.github.io/developer/get-started/get-api-key/ "Access your Watson Assistance application instance").
+2. Install (https://git-scm.com/downloads "git").
+3. Register for an [link] (https://www.ibm.com/account/us-en/signup/register.html "Sign up to IBMid") (https://git-scm.com/downloads "IBM Cloud account").
+4. Install the [link] (https://console.bluemix.net/docs/cli/index.html#cli "IBM Cloud cli tool").
+5.  Install NGROK [link] (https://ngrok.com/ "NGROK") to create a secure tunnel from your skill to your Waston Assistant instance on IBM Cloud.
+Start the secure tunnel.  From the command-line, enter ngrok http 10011
+6. (Optional) Add the regex browser plugin to your web browser.
+---
+## Step 1:  Clone the hello world skill
+1.  Copy the hello world skill boilerplate to your local system.
+1.1 Go to  https://github.com/Watson-Personal-Assistant/SkillBoilerplate.
+1.2 Click Fork to take a copy of the repository.
+1.3 Click Clone or download. Copy the git url.
+1.4  Open the git bash command-line utility and enter
+git clone git_url
+2. Install the node dependencies for the skill.
+2.1 Enter cd SkillBoilderplate.
+2.2 Enter npm install.
+3.  Specify regexp as the NLU engine to use in the skill.
+The skill is configured to use two NLU engines; wcs (Watson Conversation Service) and regex.  Remove wcs for this tutorial.
+3.1 Go to the res/assets directory of your local skill.
+3.2.  Find
+"nlu": [
+"regexp", "wcs","skill"
+3.3 Remove "wcs"
+3.4 Save the file.
+4.  Start the skill.  From the command line, enter: npm run start
+---
+Step 2:  Test your skill from your local system.
+---
+1. Start a web browser and open the converse REST API in the Swagger UI.  Enter:
+http://localhost:10011
+2.  Go to Converse.
+3. Click /converse.
+4. Click Try it out.
+5. Click Execute.
+The converse REST API responds with "Hello world".  The response is included the text attribute of the following JSON data.
+Note:  In this tutorial, you sent both the intent and the input input directly to a single skill.  In reality, the Watson Assistant performs some additional steps.  It determines which skills can process an intent and it determines which skill is best placed to handle the intent.
+
+---
+Step 3:  Register your skill with your Watson Assistant.
+---
+1. Start a secure NGROK tunnel between your skill and your Watson Assistant service on IBM Cloud.
+Go to the directory where you install NGROK and enter: ngrok http 10011
+2. Using the Skills REST API of your Watson Assistant, register your skill with your assistant. Enter:
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "name": "paste-your-skill_name_here", "url": "https://paste-your-ngrok-key-here.ngrok.io" }' 'https://watson-personal-assistant-toolkit.mybluemix.net/v2/api/skills?api_key=paste-your-api-key-here'
+A skill added successfully message is displayed.
+
+---
+Step 4:  Add your skill to the skill set of your Waston Assistant.
+---
+1. Your assistant typically has multiple skills associated with it.  Using the skillset REST API of your assistant, create a skillset. Enter:
+curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "name": "paste_skillset_name_here" }' 'https://watson-personal-assistant-toolkit.mybluemix.net/v2/api/skillSets?api_key=paste-your-api-key-here'
+A skillSet added successfully message is displayed.
+2. Add your new skill to your skillset.  Enter: curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "name": "paste_skillset_name_here" }' 'https://watson-personal-assistant-toolkit.mybluemix.net/v2/api/skillSets?api_key=paste-your-api-key-here'
+A link between myCollection and myHelloWorld added message is displayed.
+---
+Step 5:  Test your skill from your Watson Assistant.
+---
+1. Use the converse REST API to converse with your skill.  Enter:
+ curl -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{ "text": "Hello", "language": "en-US", "userID": "application-14c", "deviceType": "phone", "additionalInformation": { "context": {} } }' 'https://watson-personal-assistant-toolkit.mybluemix.net/v2/api/skillSets/paste_skillset_name_here/converse?api_key=paste-your-api-key-here'
+The JSON data that is returned includes the following text:
+"speech": {
+  "text": "Hello world"
+}
+ ---
+ Step 6:  Deploy your skill to IBM Cloud.
+ ---
+ Deploy your skill to IBM Cloud to make your skill available to other users.
+ 1.  Stop your local skill.  Enter Ctrl C to stop the skill.
+ 2.  Update the host name and skill name in the manifest.yml file of your skill.
+ 3. Log in to IBM Cloud. bx login --sso -a api.ng.bluemix.net -o paste-your-IBMid-here -s dev
+ 4. Push your skill to IBM Cloud.  Enter:
+ bx app push skill_name

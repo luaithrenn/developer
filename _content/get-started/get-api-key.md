@@ -1,23 +1,27 @@
 ---
-title: Accessing the Watson Assistant service
+title: Log in to the Watson Assistant console
 weight: 20
 ---
-## Register for the Watson Assistant service
-The Watson Assistant Beta is available to a limited number of customers. To request an invitation you may join our waiting list [here](https://developer.ibm.com/iot/watson-assistant/). 
+### About this task#
 
-### API key
-Your Watson Assistant beta can be accessed with your unique API key that looks something like this: 
-`xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`
+Log in to the Watson Assistant console to access your Waston Assistant instance.  From the console, you can:
+- Manage your skills and skillsets.
+- Manage your clients.
+- Converse with your skills using a chat interface.
+- View your Watson Assistant logs.
+- Access the Swagger speficiations for your Watson Assistant REST APIs.<br>
 
-An API key allows you access to the Watson Assistant service.  An API key uniquely identifies the developer organization that is creating skills or applications that use the Watson Assistant service.  The key is also used for monitoring purposes. API keys should be stored in environment variables or env files and used when making API requests to the service.  See example skill implementations for how to use an API key.
+To log in to the console, you must either provide your Watson Assistant API key or your IBMid.</p>
 
-### Accessing the service
-With your API key you can access your instance of the Watson Assistant service. From there you can access Swagger UIs for the various APIs and test your personal assistant with a simple text-based chat.
+**Using your API key**:
+<br>Your Watson Assistant API key is sent to you in the Welcome Letter.  It is your unique key in the format of <br>```xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx```<br> The key uniquely identifies your developer organization. Store your key in an environment variable or environment files and use it when you make API calls to the service.  For an example of how to use the API key, see the *Creating a simple skill* tutorial.</p><p>**Note**: Your Watson Assistant might make calls to other services on IBM Cloud or 3rd party services.  These services will have their own API keys.  As an application developer, you must provision and manage these keys.</p>
+**Using your IBMid**:
+<br>To log in using your IBMid, you must link your IBMid to your Watson Assistant API key.  For instructions, see [Linking your Watson Assistant API key with your your IBMid]({{site.baseurl}}/get-started/get-api-key/).
 
-Watson Assistant Service: [https://watson-personal-assistant-toolkit.mybluemix.net](https://watson-personal-assistant-toolkit.mybluemix.net) 
+### Procedure#
 
+To log in to the console, complete these steps:
+1. Open a web browser and enter the following URL:<br>[https://watson-personal-assistant-toolkit.mybluemix.net](https://watson-personal-assistant-toolkit.mybluemix.net)
+2. Log in to the console using either your Watson Assistant API key or your IBMid.<br>
 
-### Other service API keys
-Watson Assistant applications may leverage other Bluemix or Watson services, each with their own API keys. Similarly Watson Assistant skills may call on other services from IBM or 3rd parties. As the application developer, you would need to provision and manage those keys separately.
-
->**What next?**  Learn how to [design your assistant]({{site.baseurl}}/design/how-to-design-your-assistant)
+The Watson Assistant console is displayed.
